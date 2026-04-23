@@ -72,31 +72,27 @@ with st.sidebar:
     st.markdown("## 📖 About this app")
     st.markdown("---")
 
-    with st.expander("**What this website does**", expanded=True):
-        st.markdown("""
-        This is a **Customer Churn Predictor** for telecom/service customers.  
-        You enter a customer's profile (demographics, services, contract, charges),  
-        and the app predicts the **probability they will churn** (leave the company).  
-        Results are shown as **Low / Medium / High risk** with a percentage.
+    with st.expander("🎯 **What this website does**", expanded=True):
+        st.info("""
+        **Customer Churn Predictor** for telecom businesses.  
+        Predicts the **probability a customer will churn** based on their profile.  
+        *Results:* **Low / Medium / High risk** percentage.
         """)
 
-    with st.expander("**Use cases**"):
-        st.markdown("""
-        - **Retention teams** — Find high-risk customers and target them with offers or support.
-        - **Sales & support** — Prioritize calls and interventions by churn risk.
-        - **Marketing** — Design campaigns for at-risk segments (e.g. month-to-month, high charges).
-        - **Product** — See which services (e.g. no tech support, no contract) correlate with churn.
-        - **Executives** — Track and reduce churn rate using data-driven predictions.
+    with st.expander("💼 **Use cases**"):
+        st.success("""
+        - 🤝 **Retention teams** — Target high-risk customers.
+        - 📞 **Sales & support** — Prioritize interventions by churn risk.
+        - 📈 **Marketing** — Design campaigns for at-risk segments.
+        - 🛠️ **Product** — Identify services correlating with churn.
         """)
 
-    with st.expander("**Where the features come from**"):
-        st.markdown("""
-        The inputs mirror a **telecom/cable-style customer dataset**:
-        - **Demographics** — Gender, senior citizen, partner, dependents (from customer records).
-        - **Tenure** — How long they've been with the company (months).
-        - **Services** — Phone, internet, multiple lines, streaming TV/movies, security, backup, device protection, tech support (from product/subscription data).
-        - **Billing** — Contract type, paperless billing, payment method, monthly and total charges (from billing systems).
-        The model was trained on a customer churn dataset with these same kinds of features.
+    with st.expander("📂 **Data Features**"):
+        st.warning("""
+        - 👤 **Demographics** — Gender, age, family.
+        - ⏳ **Tenure** — Months with the company.
+        - 🌐 **Services** — Internet, security, tech support.
+        - 💳 **Billing** — Contracts, payments, charges.
         """)
 
     st.markdown("---")
@@ -151,30 +147,33 @@ with main_col:
         col32.info(f"💰 **Estimated Total Charges:** ${t_charges:.2f}")
 
 with right_col:
-    st.subheader("📊 Output & Model Details")
+    st.subheader("📊 Output & Details")
     
-    # Model Info Card
-    # Change text colors depending on the theme so it stays readable in dark mode
-    card_bg = "#1e1e1e" if st.session_state.dark_mode else "#e9ecef"
-    text_col = "#ffffff" if st.session_state.dark_mode else "#000000"
+    right_tab1, right_tab2 = st.tabs(["🔮 Prediction", "🧠 Model Info"])
     
-    st.markdown(f"""
-        <div style="background-color: {card_bg}; color: {text_col}; padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 5px solid #228be6;">
-            <h5 style="margin: 0 0 10px 0; color: #4dabf7;">🧠 Model Insights</h5>
-            <p style="margin: 0; font-size: 14px;"><strong>Algorithm:</strong> Random Forest Classifier</p>
-            <p style="margin: 0; font-size: 14px;"><strong>Accuracy:</strong> ~77.2%</p>
-            <p style="margin: 0; font-size: 14px;"><strong>Optimization:</strong> GridSearchCV Tuned</p>
-        </div>
-    """, unsafe_allow_html=True)
-    
-    predict_btn = st.button("🔮 Predict Churn Risk", use_container_width=True)
-
-    if predict_btn:
-        # User Demographics Summary Card
-        demo_bg = "#2b2210" if st.session_state.dark_mode else "#fdf4e3"
+    with right_tab2:
+        # Change text colors depending on the theme so it stays readable in dark mode
+        card_bg = "#1e1e1e" if st.session_state.dark_mode else "#e9ecef"
+        text_col = "#ffffff" if st.session_state.dark_mode else "#000000"
+        
         st.markdown(f"""
-            <div style="background-color: {demo_bg}; color: {text_col}; padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 5px solid #f5a623;">
-                <h6 style="margin: 0 0 10px 0; color: #ffc078;">👤 Selected Demographics</h6>
+            <div style="background-color: {card_bg}; color: {text_col}; padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 5px solid #228be6;">
+                <h5 style="margin: 0 0 10px 0; color: #4dabf7;">🧠 Model Insights</h5>
+                <p style="margin: 0; font-size: 14px;"><strong>Algorithm:</strong> Random Forest Classifier</p>
+                <p style="margin: 0; font-size: 14px;"><strong>Accuracy Score:</strong> 77.21%</p>
+                <p style="margin: 0; font-size: 14px;"><strong>Optimization:</strong> GridSearchCV Tuned</p>
+            </div>
+        """, unsafe_allow_html=True)
+        
+    with right_tab1:
+        predict_btn = st.button("🔮 Predict Churn Risk", use_container_width=True)
+
+        if predict_btn:
+            # User Demographics Summary Card
+            demo_bg = "#2b2210" if st.session_state.dark_mode else "#fdf4e3"
+            st.markdown(f"""
+                <div style="background-color: {demo_bg}; color: {text_col}; padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 5px solid #f5a623;">
+                    <h6 style="margin: 0 0 10px 0; color: #ffc078;">👤 Selected Demographics</h6>
                 <ul style="margin: 0; padding-left: 20px; font-size: 14px;">
                     <li><strong>Gender:</strong> {gender}</li>
                     <li><strong>Senior Citizen:</strong> {senior}</li>
@@ -209,39 +208,39 @@ with right_col:
 
         df_input = pd.DataFrame([data])
 
-        # Preprocessing
-        df_input['gender'] = df_input['gender'].map({'Male': 0, 'Female': 1})
-        for c in ['Partner', 'SeniorCitizen', 'Dependents', 'PhoneService', 'PaperlessBilling']:
-            df_input[c] = df_input[c].map({'Yes': 1, 'No': 0})
+            # Preprocessing
+            df_input['gender'] = df_input['gender'].map({'Male': 0, 'Female': 1})
+            for c in ['Partner', 'SeniorCitizen', 'Dependents', 'PhoneService', 'PaperlessBilling']:
+                df_input[c] = df_input[c].map({'Yes': 1, 'No': 0})
 
-        ohe_cols = [
-            'MultipleLines', 'InternetService', 'OnlineSecurity',
-            'OnlineBackup', 'DeviceProtection', 'TechSupport',
-            'StreamingTV', 'StreamingMovies', 'Contract'
-        ]
+            ohe_cols = [
+                'MultipleLines', 'InternetService', 'OnlineSecurity',
+                'OnlineBackup', 'DeviceProtection', 'TechSupport',
+                'StreamingTV', 'StreamingMovies', 'Contract'
+            ]
 
-        gen_enc = ohe_gen.transform(df_input[ohe_cols])
-        gen_df = pd.DataFrame(gen_enc, columns=ohe_gen.get_feature_names_out(ohe_cols), index=df_input.index)
+            gen_enc = ohe_gen.transform(df_input[ohe_cols])
+            gen_df = pd.DataFrame(gen_enc, columns=ohe_gen.get_feature_names_out(ohe_cols), index=df_input.index)
 
-        pay_enc = ohe_pay.transform(df_input[['PaymentMethod']])
-        pay_df = pd.DataFrame(pay_enc, columns=ohe_pay.get_feature_names_out(['PaymentMethod']), index=df_input.index)
+            pay_enc = ohe_pay.transform(df_input[['PaymentMethod']])
+            pay_df = pd.DataFrame(pay_enc, columns=ohe_pay.get_feature_names_out(['PaymentMethod']), index=df_input.index)
 
-        df_final = df_input.drop(columns=ohe_cols + ['PaymentMethod'])
-        df_final = pd.concat([df_final, gen_df, pay_df], axis=1)
+            df_final = df_input.drop(columns=ohe_cols + ['PaymentMethod'])
+            df_final = pd.concat([df_final, gen_df, pay_df], axis=1)
 
-        df_final[['tenure', 'MonthlyCharges', 'TotalCharges']] = scaler.transform(
-            df_final[['tenure', 'MonthlyCharges', 'TotalCharges']]
-        )
+            df_final[['tenure', 'MonthlyCharges', 'TotalCharges']] = scaler.transform(
+                df_final[['tenure', 'MonthlyCharges', 'TotalCharges']]
+            )
 
-        df_final = df_final[model.feature_names_in_]
+            df_final = df_final[model.feature_names_in_]
 
-        # Prediction
-        prob = model.predict_proba(df_final)[0][1]
+            # Prediction
+            prob = model.predict_proba(df_final)[0][1]
 
-        st.markdown("### 🎯 Prediction Result")
-        if prob >= 0.5:
-            st.error(f"**HIGH RISK: CHURN** ❌\n\nProbability: {prob:.1%}")
-        elif prob >= 0.3:
-            st.warning(f"**MEDIUM RISK** ⚠️\n\nProbability: {prob:.1%}")
-        else:
-            st.success(f"**LOW RISK: STAY** ✅\n\nProbability: {prob:.1%}")
+            st.markdown("### 🎯 Prediction Result")
+            if prob >= 0.5:
+                st.error(f"**HIGH RISK: CHURN** ❌\n\nProbability: {prob:.1%}")
+            elif prob >= 0.3:
+                st.warning(f"**MEDIUM RISK** ⚠️\n\nProbability: {prob:.1%}")
+            else:
+                st.success(f"**LOW RISK: STAY** ✅\n\nProbability: {prob:.1%}")
